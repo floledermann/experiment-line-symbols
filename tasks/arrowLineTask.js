@@ -10,8 +10,8 @@ const DEFAULTS = {
   description: "A line with embedded arrows",
   length: "50mm",
   width: "1.5mm",
-  angle: -30,          // in degrees
-  arrowWidth: 2/3,  // in proportion to line width
+  angle: -30,         // in degrees
+  arrowWidth: 2/3,    // in proportion to line width
   arrowLength: 2,     // in proportion to arrow width
   gapLength: 1,       // in proportion to arrow length
   reverse: false,
@@ -51,8 +51,6 @@ function renderArrowLine(ctx, condition) {
   let gap = al * condition.gapLength;
   // distribute remaining space evenly at beginning and end
   let arrowPos = -l2 + gap + ((l-gap) % (al+gap)) / 2;
-  
-  debugger;
   
   ctx.fillStyle = condition.arrowIntensity;
   
