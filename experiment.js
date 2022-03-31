@@ -16,6 +16,7 @@ const resource = require("stimsrv/util/resource");
 const htmlButtons = require("stimsrv/ui/htmlButtons");
 
 const arrowLineTask = require("./tasks/arrowLineTask.js");
+const parkingLineTask = require("./tasks/parkingLineTask.js");
 
 const setup = require("./setup-lab.js");
 
@@ -300,6 +301,19 @@ module.exports = {
         */
         
         // Line with embedded arrows
+
+        () => {
+          
+          return parkingLineTask({
+            name: "line-parking",
+            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
+            width: "10mm", //sequence(SIZES, { stepCount: STEP_COUNT }),
+            buttonCondition: { width: "5mm" },
+            interfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? parkingLineTask.renderer(context) : null,
+            },
+          })
+        },
 
         () => {
           
