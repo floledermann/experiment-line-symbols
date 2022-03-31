@@ -13,10 +13,10 @@ const DEFAULTS = {
   angle: -30,           // in degrees
   borderWidth: 1/9,
   dashWidth: 1/18,
-  leftWidth: 1/3,       // in proportion to line width
+  leftWidth: 8/27,       // in proportion to line width
   leftDashSpacing: 1,   // in proportion to lane width
-  leftDashAngle: 0,    // in degrees
-  rightWidth: 1/3,       // in proportion to line width
+  leftDashAngle: 45,    // in degrees
+  rightWidth: 8/27,       // in proportion to line width
   rightDashSpacing: 1,   // in proportion to lane width
   rightDashAngle: 45,    // in degrees
   backgroundIntensity: 1.0,
@@ -64,16 +64,19 @@ function renderParkingLine(ctx, condition) {
   let dw = w * condition.dashWidth;
   let dw2 = dw/2;
   
-  let lane = w * condition.leftWidth * Math.sqrt( 1 + Math.tan(condition.leftDashAngle / 180 * Math.PI) ** 2);
-  let gap = lane * condition.leftDashSpacing;
+  let tanAngle = Math.tan(condition.leftDashAngle / 180 * Math.PI);
+  let lane = w * condition.leftWidth * Math.sqrt( 1 + tanAngle ** 2);
+  //let gap = lane * condition.leftDashSpacing;
+  // taking the sqrt of the spacing factor looks intuitively right (equal grey value)
+  let gap = w * condition.leftWidth * Math.sqrt(Math.sqrt( 1 + tanAngle ** 2)) * condition.leftDashSpacing;
   
   // distribute remaining space evenly at beginning and end
-  let dashPos = -l2; // + gap + ((l-gap) % (al+gap)) / 2;
+  let dashPos = -l2 + gap - tanAngle * w * condition.leftWidth / 2;
     
   ctx.fillStyle = condition.dashIntensity;
   
   
-  while (dashPos < l2-gap) {
+  while (dashPos < l2 - gap - tanAngle * w * condition.leftWidth / 2) {
     
     ctx.save();
     
@@ -94,13 +97,16 @@ function renderParkingLine(ctx, condition) {
     dashPos += gap;   
   }
 
-  lane = w * condition.rightWidth * Math.sqrt( 1 + Math.tan(condition.rightDashAngle / 180 * Math.PI) ** 2);
-  gap = lane * condition.rightDashSpacing;
+  tanAngle = Math.tan(condition.rightDashAngle / 180 * Math.PI);
+  lane = w * condition.rightWidth * Math.sqrt( 1 + tanAngle ** 2);
+  //gap = lane * condition.rightDashSpacing;
+  // taking the sqrt of the spacing factor looks intuitively right (equal grey value)
+  gap = w * condition.rightWidth * Math.sqrt(Math.sqrt( 1 + tanAngle ** 2)) * condition.rightDashSpacing;
   
   // distribute remaining space evenly at beginning and end
-  dashPos = -l2; // + gap + ((l-gap) % (al+gap)) / 2;
+  dashPos = -l2 + gap - tanAngle * w * condition.rightWidth / 2; // + gap + ((l-gap) % (al+gap)) / 2;
   
-  while (dashPos < l2-gap) {
+  while (dashPos < l2 - gap - tanAngle * w * condition.rightWidth / 2) {
     
     ctx.save();
     
