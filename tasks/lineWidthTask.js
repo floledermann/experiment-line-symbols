@@ -8,7 +8,7 @@ const canvasRenderer = require("stimsrv/stimulus/canvas/canvasRenderer");
 const DEFAULTS = {
   name: "variable-width-line",
   description: "A line and a set of candidate line widths.",
-  stimulusPos: "30mm",
+  stimulusPos: "40mm",
   stimulusLength: "50mm",
   stimulusAngle: -75,           // in degrees
   stimulusWidthCandidate: "B",
@@ -85,103 +85,6 @@ function renderLineWidths(ctx, condition) {
     w *= c.candidatesWidthFactor;
   }
  
- /*
-  let w = condition.width;
-  let l = condition.length;
-  let w2 = w/2;
-  let l2 = l/2;
-    
-  ctx.rotate(condition.angle / 180 * Math.PI);
-  
-  let bw = w*condition.borderWidth;
-  
-  ctx.save();
-  ctx.fillStyle = condition.foregroundIntensity;
-  
-  ctx.beginPath();
-  ctx.moveTo(-l2,-w2);
-  ctx.lineTo(l2,-w2);
-  ctx.lineTo(l2,-w2+bw);
-  ctx.lineTo(-l2,-w2+bw);
-  ctx.closePath();
-  ctx.fill();
-  
-  ctx.beginPath();
-  ctx.moveTo(-l2,w2);
-  ctx.lineTo(l2,w2);
-  ctx.lineTo(l2,w2-bw);
-  ctx.lineTo(-l2,w2-bw);
-  ctx.closePath();
-  ctx.fill();
-  
-  ctx.restore();
-  
-  let dw = w * condition.dashWidth;
-  let dw2 = dw/2;
-  
-  let tanAngle = Math.tan(condition.leftDashAngle / 180 * Math.PI);
-  let lane = w * condition.leftWidth * Math.sqrt( 1 + tanAngle ** 2);
-  //let gap = lane * condition.leftDashSpacing;
-  // taking the sqrt of the spacing factor looks intuitively right (equal grey value)
-  let gap = w * condition.leftWidth * Math.sqrt(Math.sqrt( 1 + tanAngle ** 2)) * condition.leftDashSpacing;
-  
-  // distribute remaining space evenly at beginning and end
-  let dashPos = -l2 + gap - tanAngle * w * condition.leftWidth / 2;
-    
-  ctx.fillStyle = condition.dashIntensity;
-  
-  
-  while (dashPos < l2 - gap - tanAngle * w * condition.leftWidth / 2) {
-    
-    ctx.save();
-    
-    ctx.translate(dashPos, -w2 + bw/2);
-    ctx.rotate(-condition.leftDashAngle / 180 * Math.PI);
-    
-    ctx.beginPath();
-    
-    ctx.moveTo(dw2, 0);
-    ctx.lineTo(dw2, lane);
-    ctx.lineTo(-dw2, lane);
-    ctx.lineTo(-dw2, 0);
-
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-    
-    dashPos += gap;   
-  }
-
-  tanAngle = Math.tan(condition.rightDashAngle / 180 * Math.PI);
-  lane = w * condition.rightWidth * Math.sqrt( 1 + tanAngle ** 2);
-  //gap = lane * condition.rightDashSpacing;
-  // taking the sqrt of the spacing factor looks intuitively right (equal grey value)
-  gap = w * condition.rightWidth * Math.sqrt(Math.sqrt( 1 + tanAngle ** 2)) * condition.rightDashSpacing;
-  
-  // distribute remaining space evenly at beginning and end
-  dashPos = -l2 + gap - tanAngle * w * condition.rightWidth / 2; // + gap + ((l-gap) % (al+gap)) / 2;
-  
-  while (dashPos < l2 - gap - tanAngle * w * condition.rightWidth / 2) {
-    
-    ctx.save();
-    
-    ctx.translate(dashPos, w2 - bw/2);
-    ctx.rotate(condition.rightDashAngle / 180 * Math.PI);
-    
-    ctx.beginPath();
-    
-    ctx.moveTo(dw2, 0);
-    ctx.lineTo(dw2, -lane);
-    ctx.lineTo(-dw2, -lane);
-    ctx.lineTo(-dw2, 0);
-
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-    
-    dashPos += gap;   
-  }
- */
 }
 
 
