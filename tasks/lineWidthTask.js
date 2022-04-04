@@ -18,7 +18,7 @@ const DEFAULTS = {
   candidatesAngle: -10,
   candidatesLabelGap: "10mm",
   candidatesFontSize: "5mm",
-  numCandidates: 6,
+  numCandidates: 4,
   candidatesPos: "-30mm",
   candidateHeight: "13mm",
   backgroundIntensity: 1.0,
@@ -35,8 +35,6 @@ function renderLineWidths(ctx, condition) {
   }, condition);
   
   let c = condition;
-  
-  debugger;
   
   ctx.save();
   
