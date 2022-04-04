@@ -17,6 +17,7 @@ const htmlButtons = require("stimsrv/ui/htmlButtons");
 
 const arrowLineTask = require("./tasks/arrowLineTask.js");
 const parkingLineTask = require("./tasks/parkingLineTask.js");
+const lineWidthTask = require("./tasks/lineWidthTask.js");
 
 const setup = require("./setup-lab.js");
 
@@ -301,6 +302,19 @@ module.exports = {
         */
         
         // Line with embedded arrows
+
+        () => {
+          
+          return lineWidthTask({
+            name: "line-variable-width",
+            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
+            width: "10mm", //sequence(SIZES, { stepCount: STEP_COUNT }),
+            buttonCondition: { width: "5mm" },
+            xinterfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? lineWidthTask.renderer(context) : null,
+            },
+          })
+        },
 
         () => {
           
