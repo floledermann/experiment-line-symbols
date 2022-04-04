@@ -18,6 +18,7 @@ const htmlButtons = require("stimsrv/ui/htmlButtons");
 const arrowLineTask = require("./tasks/arrowLineTask.js");
 const parkingLineTask = require("./tasks/parkingLineTask.js");
 const lineWidthTask = require("./tasks/lineWidthTask.js");
+const countParallelLinesTask = require("./tasks/countParallelLinesTask.js");
 
 const setup = require("./setup-lab.js");
 
@@ -302,6 +303,19 @@ module.exports = {
         */
         
         // Line with embedded arrows
+
+        () => {
+          
+          return countParallelLinesTask({
+            name: "count-lines",
+            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
+            //width: "10mm", //sequence(SIZES, { stepCount: STEP_COUNT }),
+            buttonCondition: { width: "5mm" },
+            xinterfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? countParallelLinesTask.renderer(context) : null,
+            },
+          })
+        },
 
         () => {
           
