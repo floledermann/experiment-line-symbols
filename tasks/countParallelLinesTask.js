@@ -8,11 +8,12 @@ const canvasRenderer = require("stimsrv/stimulus/canvas/canvasRenderer");
 const DEFAULTS = {
   name: "count-lines",
   description: "Count the number of parallel lines.",
-  length: "50mm",
+  length: "60mm",
   angle: -30,           // in degrees
-  width: "0.5mm",
-  gap: "1mm",
-  numLines: 7,
+  width: "0.15mm",
+  gap: "1.25mm",
+  numLines: 9,
+  blurRadius: 0.4,
   backgroundIntensity: 1.0,
   foregroundIntensity: 0.0,
   choices: [{label: "Continue"}]
@@ -29,8 +30,25 @@ function renderParallelLines(ctx, condition) {
   let c = condition;
   
   ctx.rotate(c.angle * Math.PI / 180);
-  ctx.translate(0, -c.gap * (c.numCandidates-1) - c.width * c.numCandidates / 2);
   ctx.lineWidth = c.width;
+  
+  ctx.fillStyle = condition.foregroundIntensity;
+  ctx.strokeStyle = condition.foregroundIntensity;
+  
+  if (c.blurRadius) {
+    let color = parseColor(c.foregroundIntensity);
+    let colorStr = "rgba(" + color[0] + "," + color[1] + "," + color[2];
+    let gradient = ctx.createLinearGradient(-c.length / 2, 0, c.length / 2, 0);
+    gradient.addColorStop(0, colorStr + ",0)");
+    gradient.addColorStop(c.blurRadius, colorStr + ",1)");
+    gradient.addColorStop(1-c.blurRadius, colorStr + ",1)");
+    gradient.addColorStop(1, colorStr + ",0)");
+    ctx.strokeStyle = gradient;
+  }
+  
+  ctx.save();
+
+  ctx.translate(0, -(c.gap + c.width) * (c.numLines-1) / 2);
   
   for (let i=0; i<c.numLines; i++) {
     
@@ -41,7 +59,48 @@ function renderParallelLines(ctx, condition) {
     
     ctx.translate(0, c.gap + c.width);
   }
- 
+  
+  ctx.restore();
+  
+  //ctx.fillStyle = "#7f7f7f";
+  //ctx.fillRect(-c.length / 2 - 20, -50, 60, 100);
+  
+}
+
+function parseColor(str) {
+  
+  let c;
+  
+  c = str.match(/^#([0-9a-f]{6})$/i);
+  if(c) {
+      return [
+          parseInt(c[1].substr(0,2),16),
+          parseInt(c[1].substr(2,2),16),
+          parseInt(c[1].substr(4,2),16)
+      ];
+  }
+  
+  c = str.match(/^#([0-9a-f]{8})$/i);
+  if(c) {
+      return [
+          parseInt(c[1].substr(0,2),16),
+          parseInt(c[1].substr(2,2),16),
+          parseInt(c[1].substr(4,2),16),
+          parseInt(c[1].substr(6,2),16)
+      ];
+  }
+
+  c = str.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+  if(c) {
+      return [+c[1],+c[2],+c[3]];
+  } 
+
+  c = str.match(/^rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+  if(c) {
+      return [+c[1],+c[2],+c[3],+c[4]];
+  } 
+
+  return null;
 }
 
 
