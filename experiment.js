@@ -301,44 +301,19 @@ module.exports = {
           },
         }),  
         */
-        
-        // Line with embedded arrows
-
-        () => {
-          
-          return countParallelLinesTask({
-            name: "count-lines",
-            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
-            //width: "10mm", //sequence(SIZES, { stepCount: STEP_COUNT }),
-            buttonCondition: { width: "5mm" },
-            xinterfaces: {
-              display: config => context => "station" + context.targetStation == context.role ? countParallelLinesTask.renderer(context) : null,
-            },
-          })
-        },
 
         () => {
           
           return lineWidthTask({
             name: "line-variable-width",
-            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
-            width: "10mm", //sequence(SIZES, { stepCount: STEP_COUNT }),
-            buttonCondition: { width: "5mm" },
-            xinterfaces: {
-              display: config => context => "station" + context.targetStation == context.role ? lineWidthTask.renderer(context) : null,
-            },
-          })
-        },
-
-        () => {
-          
-          return parkingLineTask({
-            name: "line-parking",
-            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
-            width: "10mm", //sequence(SIZES, { stepCount: STEP_COUNT }),
+            numCandidates: 4,
+            stimulusAngle: random.range(-80, -70, 1),
+            stimulusWidthCandidate: random(["A","B","C","D"]),
+            candidatesBaseWidth: sequence.loop(["0.5mm","0.2mm","0.1mm"], { stepCount: 3 }),
+            candidatesWidthFactor: sequence([1.4, 1.3, 1.2], { stepCount: 9 }),
             buttonCondition: { width: "5mm" },
             interfaces: {
-              display: config => context => "station" + context.targetStation == context.role ? parkingLineTask.renderer(context) : null,
+              display: config => context => "station" + context.targetStation == context.role ? lineWidthTask.renderer(context) : null,
             },
           })
         },
@@ -347,11 +322,48 @@ module.exports = {
           
           return arrowLineTask({
             name: "line-arrow",
-            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
-            width: "1.5mm", //sequence(SIZES, { stepCount: STEP_COUNT }),
+            reverse: random.pick([true, false]),
+            angle: random.range(-15, -70, 1),
+            width: sequence(["1.2mm","1mm","0.8mm","0.7mm","0.6mm","0.5mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? arrowLineTask.renderer(context) : null,
+            },
+          })
+        },
+
+        () => {
+          
+          return parkingLineTask({
+            name: "line-parking",
+            leftDashAngle: random.pick([45, -45]),
+            rightDashAngle: random.pick([45, -45]),
+            angle: random.range(-15, -70, 1),
+            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
+            width: sequence(["3mm","2.5mm","2mm","1.5mm"], { stepCount: 3 }),
+            buttonCondition: { width: "5mm", angle: -20 },
+            interfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? parkingLineTask.renderer(context) : null,
+            },
+          })
+        },
+
+        () => {
+          
+          // randomize combinations of lineWidth & gap
+          let permutations = [];
+          
+          
+          return countParallelLinesTask({
+            name: "count-lines",
+            numLines: random.pick([6,7,8,9]),
+            angle: random.range(-15, -70, 1),
+            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
+            lineWidth: sequence.loop(["0.2mm","0.1mm","0.08mm","0.06mm"], { stepCount: 2 }),
+            gap: sequence(["1.2mm","1mm","0.8mm","0.7mm","0.6mm","0.5mm"], { stepCount: 8 }),
+            buttonCondition: { width: "5mm", angle: -20 },
+            interfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? countParallelLinesTask.renderer(context) : null,
             },
           })
         },
