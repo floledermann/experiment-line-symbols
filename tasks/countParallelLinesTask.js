@@ -10,7 +10,7 @@ const DEFAULTS = {
   description: "Count the number of parallel lines.",
   length: "60mm",
   angle: -30,           // in degrees
-  width: "0.15mm",
+  lineWidth: "0.15mm",
   gap: "1.25mm",
   numLines: 9,
   blurRadius: 0.4,
@@ -19,7 +19,7 @@ const DEFAULTS = {
   choices: [{label: "Continue"}]
 };
 
-let dimensionKeys = ["length","width","gap"];
+let dimensionKeys = ["length","lineWidth","gap"];
 
 
 function renderParallelLines(ctx, condition) {
@@ -30,7 +30,7 @@ function renderParallelLines(ctx, condition) {
   let c = condition;
   
   ctx.rotate(c.angle * Math.PI / 180);
-  ctx.lineWidth = c.width;
+  ctx.lineWidth = c.lineWidth;
   
   ctx.fillStyle = condition.foregroundIntensity;
   ctx.strokeStyle = condition.foregroundIntensity;
@@ -48,7 +48,7 @@ function renderParallelLines(ctx, condition) {
   
   ctx.save();
 
-  ctx.translate(0, -(c.gap + c.width) * (c.numLines-1) / 2);
+  ctx.translate(0, -(c.gap + c.lineWidth) * (c.numLines-1) / 2);
   
   for (let i=0; i<c.numLines; i++) {
     
@@ -57,7 +57,7 @@ function renderParallelLines(ctx, condition) {
     ctx.lineTo(c.length / 2, 0);
     ctx.stroke();
     
-    ctx.translate(0, c.gap + c.width);
+    ctx.translate(0, c.gap + c.lineWidth);
   }
   
   ctx.restore();
