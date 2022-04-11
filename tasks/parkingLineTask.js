@@ -70,8 +70,10 @@ function renderParkingLine(ctx, condition) {
   // taking the sqrt of the spacing factor looks intuitively right (equal grey value)
   let gap = w * condition.leftWidth * Math.sqrt(Math.sqrt( 1 + tanAngle ** 2)) * condition.leftDashSpacing;
   
+  let remainder = l % gap;
+  
   // distribute remaining space evenly at beginning and end
-  let dashPos = -l2 + gap - tanAngle * w * condition.leftWidth / 2;
+  let dashPos = -l2 + gap + remainder / 2 - tanAngle * w * condition.leftWidth / 2;
     
   ctx.fillStyle = condition.dashIntensity;
   
@@ -139,22 +141,50 @@ let buttonRenderer = config => canvasRenderer(renderParkingLine, {
   intensities: ["dashIntensity"],
   // make sure to specify width and height of the canvas in pixels
   width: 100,
-  height: 50,
+  height: 100,
   // each condition received can be adapted to the button by overriding some of its properties
   overrideCondition: config.buttonCondition || {
     length: "20mm",
-    width: "2mm"
+    width: "2mm",
+    angle: -45
   }
 });
 
 let buttons = config => htmlButtons({
-  buttons: condition => condition.choices.map(
-    choice => ({
-      label: choice.label,
-      response: choice.response || choice,
+  buttons: [
+    {
+      label: " ",
+      response: {
+        leftDashAngle: 45,
+        rightDashAngle: 45
+      },
       subUI: buttonRenderer(config)
-    })
-  )
+    },
+    {
+      label: " ",
+      response: {
+        leftDashAngle: 45,
+        rightDashAngle: -45
+      },
+      subUI: buttonRenderer(config)
+    },
+    {
+      label: " ",
+      response: {
+        leftDashAngle: -45,
+        rightDashAngle: -45
+      },
+      subUI: buttonRenderer(config)
+    },
+    {
+      label: " ",
+      response: {
+        leftDashAngle: -45,
+        rightDashAngle: 45
+      },
+      subUI: buttonRenderer(config)
+    }
+  ]
 });
 
 

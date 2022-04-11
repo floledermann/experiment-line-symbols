@@ -105,12 +105,15 @@ let buttonRenderer = config => canvasRenderer(renderLineWidths, {
 });
 
 let buttons = config => htmlButtons({
-  buttons: condition => condition.choices.map(
-    choice => ({
-      label: choice.label,
-      response: choice.response || choice,
-      subUI: buttonRenderer(config)
-    })
+  buttons: condition => Array.from(
+    {length: condition.numCandidates},
+    (_, i) => {
+      let cand = String.fromCharCode(i + 65);
+      return {
+        label: cand,
+        response: { stimulusWidthCandidate: cand }
+      }
+    }
   )
 });
 

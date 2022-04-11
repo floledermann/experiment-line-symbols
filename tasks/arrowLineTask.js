@@ -14,6 +14,9 @@ const DEFAULTS = {
   arrowWidth: 2/3,    // in proportion to line width
   arrowLength: 2,     // in proportion to arrow width
   gapLength: 1,       // in proportion to arrow length
+  letterSize: "6mm",
+  letterGap: "6mm",
+  letterWeight: "bold",
   reverse: false,
   backgroundIntensity: 1.0,
   foregroundIntensity: 0.0,
@@ -26,6 +29,8 @@ function renderArrowLine(ctx, condition) {
 
   condition = Object.assign({
   }, condition);
+  
+  let c = condition;
     
   let w = condition.width;
   let l = condition.length;
@@ -34,8 +39,27 @@ function renderArrowLine(ctx, condition) {
     
   ctx.rotate(condition.angle / 180 * Math.PI);
   
-  ctx.save();
   ctx.fillStyle = condition.foregroundIntensity;
+  
+  if (c.letterSize > 0) {
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    ctx.font = c.letterWeight + " " + c.letterSize + "px sans-serif";
+
+    ctx.save();
+    ctx.translate(-l2 - c.letterGap, 0);
+    ctx.rotate(-condition.angle / 180 * Math.PI);
+    ctx.fillText("A", 0, 0);
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(l2 + c.letterGap, 0);
+    ctx.rotate(-condition.angle / 180 * Math.PI);
+    ctx.fillText("B", 0, 0);
+    ctx.restore();
+  }
+  
+  ctx.save();
   ctx.beginPath();
   ctx.moveTo(-l2,-w2);
   ctx.lineTo(l2,-w2);
@@ -76,7 +100,7 @@ function renderArrowLine(ctx, condition) {
 }
 
 let renderer = config => canvasRenderer(renderArrowLine, {
-  dimensions: ["length", "width"],
+  dimensions: ["length", "width", "letterSize", "letterGap"],
   intensities: ["arrowIntensity"]
 });
 
@@ -94,13 +118,16 @@ let buttonRenderer = config => canvasRenderer(renderArrowLine, {
 });
 
 let buttons = config => htmlButtons({
-  buttons: condition => condition.choices.map(
-    choice => ({
-      label: choice.label,
-      response: choice.response || choice,
-      subUI: buttonRenderer(config)
-    })
-  )
+  buttons: condition => [
+    {
+      label: "A&nbsp;&nbsp;&nbsp;► ► ►&nbsp;&nbsp;&nbsp;B",
+      response: { reverse: false }
+    },
+    {
+      label: "A&nbsp;&nbsp;&nbsp;◄ ◄ ◄&nbsp;&nbsp;&nbsp;B",
+      response: { reverse: false }
+    }
+  ]
 });
 
 

@@ -127,7 +127,6 @@ let buttons = config => htmlButtons({
     choice => ({
       label: choice.label,
       response: choice.response || choice,
-      subUI: buttonRenderer(config)
     })
   )
 });

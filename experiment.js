@@ -289,41 +289,24 @@ module.exports = {
           // config (static)
           stimulusDisplay: context => "station" + context.targetStation + ".display"
         }),
-
+*/
         pause({
           message: context => {
             let msg = {
               "*": "",
-              "control": "Transition to Station " + context.targetStation
+              "control": "Next Task: Arrow Line"
             };
-            msg["station" + context.targetStation + ".display"] = "Next Task:\nPress the button on the response device that best matches the shown graphics.\n\nPress «Continue» when you are ready.";
+            msg["station" + context.targetStation + ".display"] = "Next Task:\nPress the button on the response device that matches the orientation of the arrows.\n\nPress «Continue» when you are ready.";
             return msg;
           },
         }),  
-        */
-
-        () => {
-          
-          return lineWidthTask({
-            name: "line-variable-width",
-            numCandidates: 4,
-            stimulusAngle: random.range(-80, -70, 1),
-            stimulusWidthCandidate: random(["A","B","C","D"]),
-            candidatesBaseWidth: sequence.loop(["0.5mm","0.2mm","0.1mm"], { stepCount: 3 }),
-            candidatesWidthFactor: sequence([1.4, 1.3, 1.2], { stepCount: 9 }),
-            buttonCondition: { width: "5mm" },
-            interfaces: {
-              display: config => context => "station" + context.targetStation == context.role ? lineWidthTask.renderer(context) : null,
-            },
-          })
-        },
 
         () => {
           
           return arrowLineTask({
             name: "line-arrow",
             reverse: random.pick([true, false]),
-            angle: random.range(-15, -70, 1),
+            angle: random.range(-10, -70, 1),
             width: sequence(["1.2mm","1mm","0.8mm","0.7mm","0.6mm","0.5mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },
             interfaces: {
@@ -331,6 +314,44 @@ module.exports = {
             },
           })
         },
+
+        pause({
+          message: context => {
+            let msg = {
+              "*": "",
+              "control": "Transition to Station " + context.targetStation
+            };
+            msg["station" + context.targetStation + ".display"] = "Next Task:\nSelect the line on the left which best matches the line shown on the right.\n\nPress «Continue» when you are ready.";
+            return msg;
+          },
+        }),  
+
+        () => {
+          
+          return lineWidthTask({
+            name: "line-variable-width",
+            numCandidates: 4,
+            stimulusAngle: random.range(-75, -15, 1),
+            stimulusWidthCandidate: random(["A","B","C","D"]),
+            candidatesBaseWidth: sequence.loop(["0.5mm","0.2mm","0.1mm"], { stepCount: 3 }),
+            candidatesWidthFactor: sequence([1.5, 1.33, 1.25], { stepCount: 9 }),
+            buttonCondition: { width: "5mm" },
+            interfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? lineWidthTask.renderer(context) : null,
+            },
+          })
+        },
+
+        pause({
+          message: context => {
+            let msg = {
+              "*": "",
+              "control": "Next Task: Parking Line"
+            };
+            msg["station" + context.targetStation + ".display"] = "Next Task:\nPress the button on the response device that best matches the type of line shown.\n\nPress «Continue» when you are ready.";
+            return msg;
+          },
+        }),  
 
         () => {
           
@@ -341,16 +362,27 @@ module.exports = {
             angle: random.range(-15, -70, 1),
             //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
             width: sequence(["3mm","2.5mm","2mm","1.5mm"], { stepCount: 3 }),
-            buttonCondition: { width: "5mm", angle: -20 },
+            buttonCondition: { width: "5mm", angle: -40 },
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? parkingLineTask.renderer(context) : null,
             },
           })
         },
 
+        pause({
+          message: context => {
+            let msg = {
+              "*": "",
+              "control": "Next Task: Parking Line"
+            };
+            msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the number of parallel lines.\n\nPress «Continue» when you are ready.";
+            return msg;
+          },
+        }), 
+        
         () => {
           
-          // randomize combinations of lineWidth & gap
+          // TODO: randomize combinations of lineWidth & gap
           let permutations = [];
           
           
@@ -362,6 +394,7 @@ module.exports = {
             lineWidth: sequence.loop(["0.2mm","0.1mm","0.08mm","0.06mm"], { stepCount: 2 }),
             gap: sequence(["1.2mm","1mm","0.8mm","0.7mm","0.6mm","0.5mm"], { stepCount: 8 }),
             buttonCondition: { width: "5mm", angle: -20 },
+            choices: [5,6,7,8,9,10].map(x => ({label: x, response: {numLines: x}})),
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? countParallelLinesTask.renderer(context) : null,
             },
