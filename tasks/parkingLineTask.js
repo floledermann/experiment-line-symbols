@@ -140,8 +140,8 @@ let buttonRenderer = config => canvasRenderer(renderParkingLine, {
   dimensions: ["length", "width"],
   intensities: ["dashIntensity"],
   // make sure to specify width and height of the canvas in pixels
-  width: 100,
-  height: 100,
+  width: 90,
+  height: 90,
   // each condition received can be adapted to the button by overriding some of its properties
   overrideCondition: config.buttonCondition || {
     length: "20mm",
@@ -153,7 +153,7 @@ let buttonRenderer = config => canvasRenderer(renderParkingLine, {
 let buttons = config => htmlButtons({
   buttons: [
     {
-      label: " ",
+      label: null,
       response: {
         leftDashAngle: 45,
         rightDashAngle: 45
@@ -161,7 +161,7 @@ let buttons = config => htmlButtons({
       subUI: buttonRenderer(config)
     },
     {
-      label: " ",
+      label: null,
       response: {
         leftDashAngle: 45,
         rightDashAngle: -45
@@ -169,7 +169,7 @@ let buttons = config => htmlButtons({
       subUI: buttonRenderer(config)
     },
     {
-      label: " ",
+      label: null,
       response: {
         leftDashAngle: -45,
         rightDashAngle: -45
@@ -177,7 +177,7 @@ let buttons = config => htmlButtons({
       subUI: buttonRenderer(config)
     },
     {
-      label: " ",
+      label: null,
       response: {
         leftDashAngle: -45,
         rightDashAngle: 45

@@ -229,11 +229,11 @@ module.exports = {
       
       context: {
         //targetStation: random.sequence(["A","B","C"]),
-        targetStation: sequence(["A","B","C"]),
+        targetStation: sequence(["B","C","A"]),
       },
       
       tasks: [
-/*
+
         pause({
           message: context => {
             let msg = {
@@ -289,7 +289,7 @@ module.exports = {
           // config (static)
           stimulusDisplay: context => "station" + context.targetStation + ".display"
         }),
-*/
+
         pause({
           message: context => {
             let msg = {
@@ -302,12 +302,12 @@ module.exports = {
         }),  
 
         () => {
-          
+          // TODO: increase distance of response buttons
           return arrowLineTask({
             name: "line-arrow",
             reverse: random.pick([true, false]),
             angle: random.range(-10, -70, 1),
-            width: sequence(["1.2mm","1mm","0.8mm","0.7mm","0.6mm","0.5mm"], { stepCount: 4 }),
+            width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? arrowLineTask.renderer(context) : null,
@@ -331,11 +331,10 @@ module.exports = {
           return lineWidthTask({
             name: "line-variable-width",
             numCandidates: 4,
-            stimulusAngle: random.range(-75, -15, 1),
+            stimulusAngle: random.range(-75, -50, 1),
             stimulusWidthCandidate: random(["A","B","C","D"]),
             candidatesBaseWidth: sequence.loop(["0.5mm","0.2mm","0.1mm"], { stepCount: 3 }),
             candidatesWidthFactor: sequence([1.5, 1.33, 1.25], { stepCount: 9 }),
-            buttonCondition: { width: "5mm" },
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? lineWidthTask.renderer(context) : null,
             },
@@ -359,9 +358,9 @@ module.exports = {
             name: "line-parking",
             leftDashAngle: random.pick([45, -45]),
             rightDashAngle: random.pick([45, -45]),
-            angle: random.range(-15, -70, 1),
+            angle: random.range(-30, -60, 1),
             //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
-            width: sequence(["3mm","2.5mm","2mm","1.5mm"], { stepCount: 3 }),
+            width: sequence(["2mm","1.5mm","1mm","0.8mm","0.7mm"], { stepCount: 3 }),
             buttonCondition: { width: "5mm", angle: -40 },
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? parkingLineTask.renderer(context) : null,
@@ -379,7 +378,7 @@ module.exports = {
             return msg;
           },
         }), 
-        
+      
         () => {
           
           // TODO: randomize combinations of lineWidth & gap
@@ -391,27 +390,14 @@ module.exports = {
             numLines: random.pick([6,7,8,9]),
             angle: random.range(-15, -70, 1),
             //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
-            lineWidth: sequence.loop(["0.2mm","0.1mm","0.08mm","0.06mm"], { stepCount: 2 }),
-            gap: sequence(["1.2mm","1mm","0.8mm","0.7mm","0.6mm","0.5mm"], { stepCount: 8 }),
-            buttonCondition: { width: "5mm", angle: -20 },
+            lineWidth: sequence.loop(["0.1mm","0.05mm"], { stepCount: 2 }),
+            gap: sequence(["0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
             choices: [5,6,7,8,9,10].map(x => ({label: x, response: {numLines: x}})),
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? countParallelLinesTask.renderer(context) : null,
             },
           })
         },
-
-        pause({
-          message: context => {
-            let msg = {
-              "*": "",
-              "control": "Message at station " + context.targetStation
-            };
-            msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the indicated icons on the map accurately, but also as fast as possible.\n\nPress «Continue» when you are ready.";
-            return msg;
-          },
-        }),  
-        
 
 
       ] // end of loop tasks
