@@ -96,11 +96,6 @@ module.exports = {
       margin-top: 0.4em;
     }
     
-    .buttons-tao {
-      display: grid;
-      grid-template-columns: repeat(5, 6em);
-    }
-    
     @media (orientation: portrait) {
       .buttons {
         display: grid;
@@ -116,26 +111,11 @@ module.exports = {
       .current-task-survey-gender .buttons button {
         margin: 12px;
       }
-      .legend {
-        font-size: 0.8em;
+
+      .current-task-line-arrow button,
+      .current-task-line-arrow-amplified button {
+        margin-top: 1.5em;
       }
-      header img {
-        vertical-align: -0.15em;
-      }
-      header h1 img {
-        vertical-align: -0.2em;
-      }
-      body[class*="current-task-icon-basemap-"] h1 {
-        font-size: 1em;
-        margin: 0 0 0.8em 0;
-      }     
-      body[class*="current-task-icon-basemap-"] .buttons {
-        grid-template-columns: repeat(3, 5em);
-        grid-template-rows: repeat(5, 2.8em);
-        font-size: 1em;
-        margin-top: 1em;
-      }
-      
     }
   `,
   
