@@ -242,7 +242,7 @@ module.exports = {
           message: context => {
             let msg = {
               "*": "Press «Continue» when you are ready at Station " + context.targetStation + ".",
-              "control": "Transition to Station " + context.targetStation
+              "control": "Next Task: Tumbling E"
             };
             msg["station" + context.targetStation + ".display"] = "Next Task:\nPress the button on the response device that matches the orientation of the shown graphics.\n\nPress «Continue» when you are ready.";
             return msg;
@@ -330,7 +330,7 @@ module.exports = {
           message: context => {
             let msg = {
               "*": "",
-              "control": "Transition to Station " + context.targetStation
+              "control": "Next Task: Line widths"
             };
             msg["station" + context.targetStation + ".display"] = "Next Task:\nSelect the line on the left which best matches the line shown on the right.\n\nPress «Continue» when you are ready.";
             return msg;
@@ -372,6 +372,26 @@ module.exports = {
             angle: random.range(-30, -60, 1),
             //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
             width: sequence(["2mm","1.5mm","1mm","0.8mm","0.7mm"], { stepCount: 3 }),
+            leftDashSpacing: 1,
+            rightDashSpacing: 1,
+            buttonCondition: { width: "5mm", angle: -40 },
+            interfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? parkingLineTask.renderer(context) : null,
+            },
+          })
+        },
+
+       () => {
+          
+          return parkingLineTask({
+            name: "line-parking-wide",
+            leftDashAngle: random.pick([45, -45]),
+            rightDashAngle: random.pick([45, -45]),
+            angle: random.range(-30, -60, 1),
+            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
+            width: sequence(["2mm","1.5mm","1mm","0.8mm","0.7mm"], { stepCount: 3 }),
+            leftDashSpacing: 1.7,
+            rightDashSpacing: 1.7,
             buttonCondition: { width: "5mm", angle: -40 },
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? parkingLineTask.renderer(context) : null,
@@ -383,7 +403,7 @@ module.exports = {
           message: context => {
             let msg = {
               "*": "",
-              "control": "Next Task: Parking Line"
+              "control": "Next Task: Parallel Lines"
             };
             msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the number of parallel lines.\n\nPress «Continue» when you are ready.";
             return msg;
