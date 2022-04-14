@@ -37,16 +37,6 @@ htmlButtons.defaults({
 let DEBUG = false;  
 //DEBUG = true;
 
-
-// sizes in mm        
-let SIZES = [1.5, 1.25, 1.0, 0.85, 0.7, 0.6, 0.5, 0.4];
-let SIZES_2 = [1.5, 1.25, 1.0, 0.85, 0.7, 0.6, 0.5];
-
-// for debug on monitor, double size
-if (DEBUG) SIZES = SIZES.map(s => 10*s);
-
-SIZES = SIZES.map(s => s+"mm");
-
 // bezels width: 66mm height: 72mm
 
 
@@ -264,7 +254,7 @@ module.exports = {
               stepSizeFine: Math.sqrt(1.2),
               numReversalsFine: 3,
               stepType: "multiply", 
-              minReversals: DEBUG ? 2 : 5,
+              minReversals: 5,
             })(context)
           },
           // config (static)
