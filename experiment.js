@@ -113,7 +113,8 @@ module.exports = {
       }
 
       .current-task-line-arrow button,
-      .current-task-line-arrow-amplified button {
+      .current-task-line-arrow-amplified button,
+      .current-task-line-arrow-amplified-align button {
         margin-top: 1.5em;
       }
     }
@@ -300,6 +301,22 @@ module.exports = {
             name: "line-arrow-amplified",
             reverse: random.pick([true, false]),
             cornerDots: true,
+            alignCornerDots: false,
+            angle: random.range(-10, -70, 1),
+            width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
+            buttonCondition: { width: "3mm" },
+            interfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? arrowLineTask.renderer(context) : null,
+            },
+          })
+        },
+
+        () => {
+          return arrowLineTask({
+            name: "line-arrow-amplified-align",
+            reverse: random.pick([true, false]),
+            cornerDots: true,
+            alignCornerDots: true,
             angle: random.range(-10, -70, 1),
             width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },

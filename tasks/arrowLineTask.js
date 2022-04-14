@@ -18,6 +18,7 @@ const DEFAULTS = {
   letterGap: "6mm",
   letterWeight: "bold",
   cornerDots: false,
+  alignCornerDots: false,
   reverse: false,
   backgroundIntensity: 1.0,
   foregroundIntensity: 0.0,
@@ -96,39 +97,62 @@ function renderArrowLine(ctx, condition) {
     ctx.fill();
     
     if (condition.cornerDots) {
+      
       ctx.save();
       ctx.fillStyle = "#00ff00";
-     
-      ctx.save();
-      let cpos = arrowPos + (condition.reverse ? 1 : al-1);
-      ctx.translate(cpos, 0);
-      let m = ctx.getTransform();
-      let p = new DOMPoint(0,0);
-      p = p.matrixTransform(m);
-      ctx.resetTransform();
-      //ctx.fillRect(Math.round(p.x-0.5), Math.round(p.y-0.5), 1, 1);
-      ctx.restore();
-     
-      ctx.save();
-      cpos = arrowPos + (condition.reverse ? al : 0);
-      ctx.translate(cpos, -aw2+0.2);
-      m = ctx.getTransform();
-      p = new DOMPoint(0,0);
-      p = p.matrixTransform(m);
-      ctx.resetTransform();
-      ctx.fillRect(Math.round(p.x-0.5), Math.round(p.y-0.5), 1, 1);
-      ctx.restore();
-      
-      ctx.save();
-      cpos = arrowPos + (condition.reverse ? al : 0);
-      ctx.translate(cpos, aw2-0.2);
-      m = ctx.getTransform();
-      p = new DOMPoint(0,0);
-      p = p.matrixTransform(m);
-      ctx.resetTransform();
-      ctx.fillRect(Math.round(p.x-0.5), Math.round(p.y-0.5), 1, 1);
-      ctx.restore();
-      
+       
+      if (!condition.alignCornerDots) {
+        
+        let cpos = arrowPos + (condition.reverse ? 1 : al-1);
+        ctx.beginPath();
+        ctx.arc(cpos, 0, 0.55, 0, 2 * Math.PI, false);
+        ctx.fill();
+        
+        cpos = arrowPos + (condition.reverse ? al : 0);
+        ctx.beginPath();
+        ctx.arc(cpos, aw2, 0.55, 0, 2 * Math.PI, false);
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.arc(cpos, -aw2, 0.55, 0, 2 * Math.PI, false);
+        ctx.fill();
+        
+      }
+      else {
+        
+        // pixel-align corner dots
+        // calculate inverse transformation and round to full pixel value
+        
+        ctx.save();
+        let cpos = arrowPos + (condition.reverse ? 1 : al-1);
+        ctx.translate(cpos, 0);
+        let m = ctx.getTransform();
+        let p = new DOMPoint(0,0);
+        p = p.matrixTransform(m);
+        ctx.resetTransform();
+        ctx.fillRect(Math.round(p.x-0.5), Math.round(p.y-0.5), 1, 1);
+        ctx.restore();
+       
+        ctx.save();
+        cpos = arrowPos + (condition.reverse ? al : 0);
+        ctx.translate(cpos, -aw2+0.2);
+        m = ctx.getTransform();
+        p = new DOMPoint(0,0);
+        p = p.matrixTransform(m);
+        ctx.resetTransform();
+        ctx.fillRect(Math.round(p.x-0.5), Math.round(p.y-0.5), 1, 1);
+        ctx.restore();
+        
+        ctx.save();
+        cpos = arrowPos + (condition.reverse ? al : 0);
+        ctx.translate(cpos, aw2-0.2);
+        m = ctx.getTransform();
+        p = new DOMPoint(0,0);
+        p = p.matrixTransform(m);
+        ctx.resetTransform();
+        ctx.fillRect(Math.round(p.x-0.5), Math.round(p.y-0.5), 1, 1);
+        ctx.restore();
+      }
       
       ctx.restore();
     }
