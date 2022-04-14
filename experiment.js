@@ -282,10 +282,24 @@ module.exports = {
         }),  
 
         () => {
-          // TODO: increase distance of response buttons
           return arrowLineTask({
             name: "line-arrow",
             reverse: random.pick([true, false]),
+            cornerDots: false,
+            angle: random.range(-10, -70, 1),
+            width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
+            buttonCondition: { width: "3mm" },
+            interfaces: {
+              display: config => context => "station" + context.targetStation == context.role ? arrowLineTask.renderer(context) : null,
+            },
+          })
+        },
+
+        () => {
+          return arrowLineTask({
+            name: "line-arrow-amplified",
+            reverse: random.pick([true, false]),
+            cornerDots: true,
             angle: random.range(-10, -70, 1),
             width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },
