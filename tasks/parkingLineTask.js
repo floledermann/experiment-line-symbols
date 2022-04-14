@@ -104,9 +104,10 @@ function renderParkingLine(ctx, condition) {
   //gap = lane * condition.rightDashSpacing;
   // taking the sqrt of the spacing factor looks intuitively right (equal grey value)
   gap = w * condition.rightWidth * Math.sqrt(Math.sqrt( 1 + tanAngle ** 2)) * condition.rightDashSpacing;
+  remainder = l % gap;
   
   // distribute remaining space evenly at beginning and end
-  dashPos = -l2 + gap - tanAngle * w * condition.rightWidth / 2; // + gap + ((l-gap) % (al+gap)) / 2;
+  dashPos = -l2 + gap + remainder / 2 - tanAngle * w * condition.rightWidth  / 2; // + gap + ((l-gap) % (al+gap)) / 2;
   
   while (dashPos < l2 - gap - tanAngle * w * condition.rightWidth / 2) {
     
