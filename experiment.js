@@ -400,27 +400,51 @@ module.exports = {
           },
         }), 
       
+        // dummy task to make sure task starts with clearly legible stimulus
+        countParallelLinesTask({
+          name: "count-lines-dummy",
+          numLines: 4,
+          angle: random.range(-15, -70, {round: 1}),
+          lineWidth: "0.12mm",
+          gap: sequence(["1mm"]), // needed to terminate task after 1 condition
+          choices: [3,4,5,6,7].map(x => ({label: x, response: {numLines: x}})),
+          interfaces: {
+            display: config => context => "station" + context.targetStation == context.role ? countParallelLinesTask.renderer(context) : null,
+          },
+        }),
+
         () => {
           
-          // TODO: randomize combinations of lineWidth & gap
+          // randomize combinations of lineWidth & gap
+          let widths = ["0.12mm","0.08mm","0.05mm"];
+          let gaps = ["0.75mm","0.5mm","0.25mm"];
+          let repetitions = 2;
+          
           let permutations = [];
           
+          for (let w of widths) {
+            for (let g of gaps) {
+              for (let i=0; i<repetitions; i++) {
+                permutations.push({lineWidth: w, gap: g});
+              }
+            }
+          }
           
           return countParallelLinesTask({
             name: "count-lines",
-            numLines: random.pick([6,7,8,9]),
-            angle: random.range(-15, -70, 1),
-            //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
-            lineWidth: sequence.loop(["0.1mm","0.05mm"], { stepCount: 2 }),
-            gap: sequence(["0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
-            choices: [5,6,7,8,9,10].map(x => ({label: x, response: {numLines: x}})),
+            numLines: random.pick([4,5,6]),
+            angle: random.range(-15, -70, {round: 1}),
+            lineWidth: sequence.loop(widths, { stepCount: repetitions }),
+            gap: sequence(gaps, { stepCount: widths.length * repetitions }),
+            choices: [3,4,5,6,7].map(x => ({label: x, response: {numLines: x}})),
+            generateCondition: random.shuffle(permutations),
             interfaces: {
               display: config => context => "station" + context.targetStation == context.role ? countParallelLinesTask.renderer(context) : null,
             },
           })
         },
 
-
+ 
       ] // end of loop tasks
     }),
 
