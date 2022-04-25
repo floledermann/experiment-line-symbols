@@ -277,7 +277,7 @@ module.exports = {
             name: "line-arrow",
             reverse: random.pick([true, false]),
             cornerDots: false,
-            angle: random.range(-10, -70, 1),
+            angle: random.range(-10, -70, {round: 1}),
             width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },
             interfaces: {
@@ -292,7 +292,7 @@ module.exports = {
             reverse: random.pick([true, false]),
             cornerDots: true,
             alignCornerDots: false,
-            angle: random.range(-10, -70, 1),
+            angle: random.range(-10, -70, {round: 1}),
             width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },
             interfaces: {
@@ -307,7 +307,7 @@ module.exports = {
             reverse: random.pick([true, false]),
             cornerDots: true,
             alignCornerDots: true,
-            angle: random.range(-10, -70, 1),
+            angle: random.range(-10, -70, {round: 1}),
             width: sequence(["0.8mm","0.6mm","0.5mm","0.4mm","0.3mm","0.25mm"], { stepCount: 4 }),
             buttonCondition: { width: "3mm" },
             interfaces: {
@@ -332,7 +332,7 @@ module.exports = {
           return lineWidthTask({
             name: "line-variable-width",
             numCandidates: 4,
-            stimulusAngle: random.range(-75, -50, 1),
+            stimulusAngle: random.range(-75, -50, {round: 1}),
             stimulusWidthCandidate: random(["A","B","C","D"]),
             candidatesBaseWidth: sequence.loop(["0.5mm","0.2mm","0.1mm"], { stepCount: 3 }),
             candidatesWidthFactor: sequence([1.5, 1.33, 1.25], { stepCount: 9 }),
@@ -359,7 +359,7 @@ module.exports = {
             name: "line-parking",
             leftDashAngle: random.pick([45, -45]),
             rightDashAngle: random.pick([45, -45]),
-            angle: random.range(-30, -60, 1),
+            angle: random.range(-30, -60, {round: 1}),
             //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
             width: sequence(["2mm","1.5mm","1mm","0.8mm","0.6mm"], { stepCount: 3 }),
             leftDashSpacing: 1,
@@ -377,7 +377,7 @@ module.exports = {
             name: "line-parking-wide",
             leftDashAngle: random.pick([45, -45]),
             rightDashAngle: random.pick([45, -45]),
-            angle: random.range(-30, -60, 1),
+            angle: random.range(-30, -60, {round: 1}),
             //choices: [{label: i.label, icon: i.svg, response: {icon: i.svg}}],
             width: sequence(["1.5mm","1mm","0.8mm","0.6mm","0.5mm"], { stepCount: 3 }),
             leftDashSpacing: 1.7,
