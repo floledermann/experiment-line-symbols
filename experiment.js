@@ -487,8 +487,6 @@ module.exports = {
             kind: random.pick([1,2,3]),
             baseMap: true, //random.shuffle([true, false], {loop: true}),
             lineWidth: sequence(LINE_WIDTHS, {stepCount: STEP_COUNT }),
-            //               map size in mm, multiplied with size adjustment
-            scaleFactor: 60/100,
             // static configuration
             generateCondition: context => condition => {
               // count is number of first icon, always 12 spots, 4 kinds
