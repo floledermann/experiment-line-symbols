@@ -19,6 +19,7 @@ const arrowLineTask = require("./tasks/arrowLineTask.js");
 const parkingLineTask = require("./tasks/parkingLineTask.js");
 const lineWidthTask = require("./tasks/lineWidthTask.js");
 const countParallelLinesTask = require("./tasks/countParallelLinesTask.js");
+const augmentedSVGTask = require("./tasks/augmentedSVGTask.js");
 
 const setup = require("./setup-lab.js");
 
@@ -39,6 +40,30 @@ let DEBUG = false;
 
 // bezels width: 66mm height: 72mm
 
+// first icon is target, count is given by condition
+// of remaining spaces, use half (rounded up) for next, recursively
+function calculateCountsByIndex(firstCount, totalCount, numberOfKinds) {
+  let countsByIndex = [firstCount];
+  let remaining = totalCount - firstCount;
+  for (let i=0; i<numberOfKinds-2; i++) {
+    let c = Math.ceil(remaining / 2);
+    countsByIndex.push(c);
+    remaining -= c;
+  }
+  countsByIndex.push(remaining);
+  return countsByIndex;
+}
+
+// generate array with random indices (0..numberOfKinds-1) for the given parameters
+// according to above rules
+function randomIndices(firstCount, totalCount, numberOfKinds) {
+  let countsByIndex = calculateCountsByIndex(firstCount, totalCount, numberOfKinds);
+  let indices = [];
+  for (let i=0; i<countsByIndex.length; i++) {
+    for (let j=0; j<countsByIndex[i]; j++) indices.push(i);
+  }
+  return Array.from(random.shuffle(indices)());
+}
 
 // stimsrv experiment definition
 module.exports = {
@@ -402,7 +427,7 @@ module.exports = {
       
         // dummy task to make sure task starts with clearly legible stimulus
         countParallelLinesTask({
-          name: "count-lines-dummy",
+          name: "count-lines-parallel-dummy",
           numLines: 4,
           angle: random.range(-15, -70, {round: 1}),
           lineWidth: "0.12mm",
@@ -431,7 +456,7 @@ module.exports = {
           }
           
           return countParallelLinesTask({
-            name: "count-lines",
+            name: "count-lines-parallel",
             numLines: random.pick([4,5,6]),
             angle: random.range(-15, -70, {round: 1}),
             lineWidth: sequence.loop(widths, { stepCount: repetitions }),
@@ -444,7 +469,52 @@ module.exports = {
           })
         },
 
- 
+        // Count icons on map
+        
+        () => {
+        
+          let BASE_MAPS = "basemap_lines_1".split(",").map(f => "resources/basemaps/" + f + ".svg");  
+          let LINE_WIDTHS = ["1mm","0.8mm","0.6mm","0.5mm"]; 
+          let STEP_COUNT = 4;
+                    
+          return augmentedSVGTask({
+            name: "count-lines-map",
+            svg: random.shuffle(BASE_MAPS, {loop: true}),
+            width: "60mm",
+            height: "60mm",
+            count: random.pick([1,2,3,4,5,6,7]),
+            numLocations: 12,
+            kind: random.pick([1,2,3]),
+            baseMap: true, //random.shuffle([true, false], {loop: true}),
+            lineWidth: sequence(LINE_WIDTHS, {stepCount: STEP_COUNT }),
+            //               map size in mm, multiplied with size adjustment
+            scaleFactor: 60/100,
+            // static configuration
+            generateCondition: context => condition => {
+              // count is number of first icon, always 12 spots, 4 kinds
+              condition.indices = randomIndices(condition.count, condition.numLocations, 4);
+            },
+            transformConditionOnClient: context => condition => {
+              //condition.iconData = SET.icons.find(i => i.icon == condition.icon);
+            },
+            dimensions: "lineWidth",
+            interfaces: {
+              display: config => context => 
+                "station" + context.targetStation == context.role ? augmentedSVGTask.renderer(context) : null,
+              //display: config => context => augmentedSVGTask.renderer(context),
+              response: config => htmlButtons({
+                //header: cond => legendHeader(cond.iconBaseURL, cond.iconData),
+                buttons: "0,1,2,3,4,5,6,7,8,9,10,11,12".split(",").map(
+                  n => ({label: n, response: { count: +n }})
+                )
+              })
+            },
+            resources: [
+              "resources/basemaps/"
+            ]
+          });
+        
+        }, 
       ] // end of loop tasks
     }),
 

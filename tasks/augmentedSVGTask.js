@@ -51,18 +51,20 @@ function svgRenderer(options) {
     
     //let unitsPerPixel = svg.rootElement.viewBox.baseVal.width / condition.width;
     
+    let w = condition.lineWidth * condition.scaleFactor;
+    
     let layer1_1 = svg.rootElement.getElementById("layer-1-part-1");
-    layer1_1.setAttribute("stroke-width","2");
+    layer1_1.setAttribute("stroke-width",w);
     let layer2_1 = svg.rootElement.getElementById("layer-2-part-1");
-    layer2_1.setAttribute("stroke-width","2");
+    layer2_1.setAttribute("stroke-width",w);
     let layer2_2 = svg.rootElement.getElementById("layer-2-part-2");
-    layer2_2.setAttribute("stroke-width","0.75");
+    layer2_2.setAttribute("stroke-width",w*0.333);
     let layer3_1 = svg.rootElement.getElementById("layer-3-part-1");
-    layer3_1.setAttribute("stroke-width","3");
+    layer3_1.setAttribute("stroke-width",w);
     let layer3_2 = svg.rootElement.getElementById("layer-3-part-2");
-    layer3_2.setAttribute("stroke-width","2");
+    layer3_2.setAttribute("stroke-width",w*0.666);
     let layer3_3 = svg.rootElement.getElementById("layer-3-part-3");
-    layer3_3.setAttribute("stroke-width","0.5");
+    layer3_3.setAttribute("stroke-width",w*0.2);
         
     for (let i=0; i<condition.numLocations; i++) {
       
@@ -108,7 +110,7 @@ function svgRenderer(options) {
         svg.style.visibility = "hidden";
         
         let header = document.createElement("header");
-        header.innerHTML = 'Count: Roads';
+        header.innerHTML = 'Count: Road ' + condition.kind + ' Segments';
         header.style.fontSize = (display.dimensionToScreenPixels("4mm") / dppx) + "px";
         parent.style.backgroundColor = "rgb(90%,90%,90%)";
         header.style.color = "#000000";
