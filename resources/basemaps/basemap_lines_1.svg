@@ -21,13 +21,13 @@
   </g>
  </g>
  <g id="layer-lines-2">
-  <g id="layer-2-part-1"></g>
-  <g id="layer-2-part-2"></g>
+  <g id="layer-2-part-1" stroke="#000000" fill="none"></g>
+  <g id="layer-2-part-2" stroke="#ffffff" fill="none"></g>
  </g>
  <g id="layer-lines-3">
-  <g id="layer-3-part-1"></g>
-  <g id="layer-3-part-2"></g>
-  <g id="layer-3-part-3"></g>
+  <g id="layer-3-part-1" stroke="#000000" fill="none"></g>
+  <g id="layer-3-part-2" stroke="#ffffff" fill="none"></g>
+  <g id="layer-3-part-3" stroke="#000000" fill="none"></g>
  </g>
  <g id="layer-nodes" fill="#fcfcfc" stroke="#000" stroke-width=".5">
   <circle id="node09" cx="84.645" cy="82.863" r="2.2072" stop-color="#000000"/>
