@@ -13,6 +13,40 @@ const DEFAULTS = {
   baseMap: true
 };
 
+function svgStr(kind, pixelsPerMM) {
+  let svgStr = `
+    <svg viewBox="0 -7.5 30 15" width="${8 * pixelsPerMM}" height="${5 * pixelsPerMM}" style="vertical-align: bottom;">
+    <defs>
+      <line id="legendLine" x1="0" y1="0" x2="30" y2="0"/>
+    </defs>`;
+    
+  if (kind == 1) {
+    svgStr += `
+      <g id="road-1">
+        <use href="#legendLine" stroke="#727272" stroke-width="5" fill="none"/>
+      </g>`;
+  }
+  if (kind == 2) {
+    svgStr += `
+      <g id="road-2">
+        <use href="#legendLine" stroke="#000000" stroke-width="9" fill="none"/>
+        <use href="#legendLine" stroke="#ffffff" stroke-width="3.3" fill="none"/>
+      </g>`;
+  }
+  if (kind == 3) {
+    svgStr += `
+      <g id="road-3">
+        <use href="#legendLine" stroke="#000000" stroke-width="9" fill="none"/>
+        <use href="#legendLine" stroke="#ffffff" stroke-width="6" fill="none"/>
+        <use href="#legendLine" stroke="#000000" stroke-width="1.8" fill="none"/>
+      </g>`;
+  }
+  
+  svgStr += `</svg>`;
+  
+  return svgStr;
+}
+
 function svgRenderer(options) {
 
   options = Object.assign({
@@ -45,13 +79,9 @@ function svgRenderer(options) {
       [3,2,1,0]
     ][condition.kind-1];
 
-    // TODO: figure out scale factor automatically
-    // but manual override may be necessary, in case icon anchor is inside
-    // a transformation (e.g. from QGIS)
+    let unitsPerPixel = svg.rootElement.viewBox.baseVal.width / condition.width;
     
-    //let unitsPerPixel = svg.rootElement.viewBox.baseVal.width / condition.width;
-    
-    let w = condition.lineWidth * condition.scaleFactor;
+    let w = condition.lineWidth * unitsPerPixel;
     
     let layer1_1 = svg.rootElement.getElementById("layer-1-part-1");
     layer1_1.setAttribute("stroke-width",w);
@@ -110,11 +140,13 @@ function svgRenderer(options) {
         svg.style.visibility = "hidden";
         
         let header = document.createElement("header");
-        header.innerHTML = 'Count: Road ' + condition.kind + ' Segments';
+        let pixelsPerMM = display.dimensionToScreenPixels("1mm") / dppx;
+        
+        header.innerHTML = 'Count: ' + svgStr(condition.kind, pixelsPerMM) + ' Road Segments';
         header.style.fontSize = (display.dimensionToScreenPixels("4mm") / dppx) + "px";
         parent.style.backgroundColor = "rgb(90%,90%,90%)";
         header.style.color = "#000000";
-        header.style.marginBottom = (display.dimensionToScreenPixels("1mm") / dppx) + "px";
+        header.style.marginBottom = (pixelsPerMM) + "px";
         //header.style.position = "absolute";
         
         
