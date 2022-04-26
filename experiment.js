@@ -132,6 +132,25 @@ module.exports = {
       .current-task-line-arrow-amplified-align button {
         margin-top: 1.5em;
       }
+      .legend {
+        font-size: 0.8em;
+      }
+      header img {
+        vertical-align: -0.15em;
+      }
+      header h1 img {
+        vertical-align: -0.2em;
+      }
+      body[class*="current-task-count-lines-map"] h1 {
+        font-size: 1em;
+        margin: 0 0 0.8em 0;
+      }     
+      body[class*="current-task-count-lines-map"] .buttons {
+        grid-template-columns: repeat(3, 5em);
+        grid-template-rows: repeat(5, 2.8em);
+        font-size: 1em;
+        margin-top: 1em;
+      }
     }
   `,
   
@@ -479,12 +498,12 @@ module.exports = {
           },
         }), 
 
-        // Count icons on map
+        // Count line types on map
         
         () => {
         
           let BASE_MAPS = "basemap_lines_1".split(",").map(f => "resources/basemaps/" + f + ".svg");  
-          let LINE_WIDTHS = ["1mm","0.8mm","0.6mm","0.5mm"]; 
+          let LINE_WIDTHS = ["1mm","0.75mm","0.5mm","0.4mm","0.3mm", "0.25mm"];  // 
           let STEP_COUNT = 4;
                     
           return augmentedSVGTask({
@@ -496,11 +515,11 @@ module.exports = {
             numLocations: 12,
             kind: random.pick([1,2,3]),
             baseMap: true, //random.shuffle([true, false], {loop: true}),
-            lineWidth: sequence(LINE_WIDTHS, {stepCount: STEP_COUNT }),
+            lineWidth: random.shuffle(LINE_WIDTHS, {multiple: STEP_COUNT }),
             // static configuration
             generateCondition: context => condition => {
-              // count is number of first icon, always 12 spots, 4 kinds
-              condition.indices = randomIndices(condition.count, condition.numLocations, 4);
+              // count is number of first kind, out of 4 kinds (3 without blanks)
+              condition.indices = randomIndices(condition.count, condition.numLocations, 3);
             },
             transformConditionOnClient: context => condition => {
               //condition.iconData = SET.icons.find(i => i.icon == condition.icon);

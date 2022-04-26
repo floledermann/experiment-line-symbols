@@ -23,7 +23,7 @@ function svgStr(kind, pixelsPerMM) {
   if (kind == 1) {
     svgStr += `
       <g id="road-1">
-        <use href="#legendLine" stroke="#727272" stroke-width="5" fill="none"/>
+        <use href="#legendLine" stroke="#989898" stroke-width="5" fill="none"/>
       </g>`;
   }
   if (kind == 2) {
