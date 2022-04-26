@@ -468,6 +468,16 @@ module.exports = {
             },
           })
         },
+        pause({
+          message: context => {
+            let msg = {
+              "*": "",
+              "control": "Next Task: Count on Map"
+            };
+            msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the number of line&nbsp;segments of the indicated type.\n\nPress «Continue» when you are ready.";
+            return msg;
+          },
+        }), 
 
         // Count icons on map
         
