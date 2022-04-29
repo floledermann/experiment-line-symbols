@@ -155,7 +155,7 @@ module.exports = {
   `,
   
   tasks: [
-/*
+
     pause({
       message: {
         "*": "Please start the experiment at the Main Monitor.",
@@ -239,16 +239,16 @@ module.exports = {
         "main.display": messages.start4
       },
     }),  
-*/
+
     loop({
       
       context: {
-        //targetStation: random.sequence(["A","B","C"]),
-        targetStation: sequence(["B","C","A"]),
+        targetStation: random.sequence(["A","B","C"]),
+        //targetStation: sequence(["B","C","A"]),
       },
       
       tasks: [
-/*
+
         pause({
           message: context => {
             let msg = {
@@ -487,8 +487,9 @@ module.exports = {
             },
           })
         },
-      */
 
+        // Count line types on map
+        
         pause({
           message: context => {
             let msg = {
