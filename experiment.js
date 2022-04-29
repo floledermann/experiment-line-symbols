@@ -495,12 +495,38 @@ module.exports = {
               "*": "",
               "control": "Next Task: Count on Map"
             };
-            msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the number of line&nbsp;segments of the indicated type.\n\nPress «Continue» when you are ready.";
+            msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the line&nbsp;segments of the indicated type.\n(The first two correct answers are \"4\")\nPress «Continue» when you are ready.";
             return msg;
           },
         }), 
 
-        // Count line types on map
+        // practice task
+        augmentedSVGTask({
+          name: "count-lines-map-practice1",
+          svg: "resources/basemaps/basemap_lines_1.svg",
+          width: "60mm",
+          height: "60mm",
+          count: 4,
+          numLocations: 12,
+          kind: sequence([3,1]),
+          baseMap: true, //random.shuffle([true, false], {loop: true}),
+          lineWidth: sequence(["1mm","1mm"]),
+          indices: [1,2,1,0,1,2,2,0,0,1,1,0],
+          interfaces: {
+            display: config => context => 
+              "station" + context.targetStation == context.role ? augmentedSVGTask.renderer(context) : null,
+            //display: config => context => augmentedSVGTask.renderer(context),
+            response: config => htmlButtons({
+              //header: cond => legendHeader(cond.iconBaseURL, cond.iconData),
+              buttons: "0,1,2,3,4,5,6,7,8,9,10,11,12".split(",").map(
+                n => ({label: n, response: { count: +n }})
+              )
+            })
+          },
+          resources: [
+            "resources/basemaps/"
+          ]
+        }),
         
         () => {
         
