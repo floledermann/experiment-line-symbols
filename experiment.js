@@ -248,7 +248,7 @@ module.exports = {
       },
       
       tasks: [
-
+/*
         pause({
           message: context => {
             let msg = {
@@ -487,6 +487,8 @@ module.exports = {
             },
           })
         },
+      */
+
         pause({
           message: context => {
             let msg = {
