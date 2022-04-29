@@ -531,7 +531,7 @@ module.exports = {
         () => {
         
           let BASE_MAPS = [1,2].map(f => "resources/basemaps/basemap_lines_" + f + ".svg");  
-          let LINE_WIDTHS = ["1mm","0.75mm","0.5mm","0.4mm","0.3mm", "0.25mm"];  // 
+          let LINE_WIDTHS = ["0.75mm","0.5mm","0.4mm","0.3mm", "0.25mm"];  // 
           let STEP_COUNT = 4;
                     
           return augmentedSVGTask({
