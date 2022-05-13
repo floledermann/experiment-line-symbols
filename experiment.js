@@ -460,7 +460,7 @@ module.exports = {
         () => {
           
           // randomize combinations of lineWidth & gap
-          let widths = ["0.12mm","0.08mm","0.05mm"];
+          let widths = ["0.12mm","0.08mm","0.05mm","0.03mm"];
           let gaps = ["0.75mm","0.5mm","0.25mm"];
           let repetitions = 2;
           
@@ -489,14 +489,14 @@ module.exports = {
         },
 
         // Count line types on map
-        
+      
         pause({
           message: context => {
             let msg = {
               "*": "",
               "control": "Next Task: Count on Map"
             };
-            msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the line&nbsp;segments of the indicated type.\n(The first two correct answers are \"4\")\nPress «Continue» when you are ready.";
+            msg["station" + context.targetStation + ".display"] = "Next Task:\nCount the line&nbsp;segments of the type indicated on top.\n(The first two correct answers are \"4\")\nPress «Continue» when you are ready.";
             return msg;
           },
         }), 
@@ -532,7 +532,7 @@ module.exports = {
         () => {
         
           let BASE_MAPS = [1,2].map(f => "resources/basemaps/basemap_lines_" + f + ".svg");  
-          let LINE_WIDTHS = ["0.75mm","0.5mm","0.4mm","0.3mm", "0.25mm"];  // 
+          let LINE_WIDTHS = ["0.75mm","0.6mm","0.5mm","0.4mm","0.3mm"];  // 
           let STEP_COUNT = 4;
                     
           return augmentedSVGTask({
@@ -571,6 +571,7 @@ module.exports = {
           });
         
         }, 
+
       ] // end of loop tasks
     }),
 

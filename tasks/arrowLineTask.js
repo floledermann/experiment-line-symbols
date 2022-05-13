@@ -188,7 +188,7 @@ let buttons = config => htmlButtons({
     },
     {
       label: "A&nbsp;&nbsp;&nbsp;◄ ◄ ◄&nbsp;&nbsp;&nbsp;B",
-      response: { reverse: false }
+      response: { reverse: true }
     }
   ]
 });
