@@ -556,7 +556,7 @@ module.exports = {
             dimensions: "lineWidth",
             interfaces: {
               display: config => context => 
-                "station" + context.targetStation == context.role ? augmentedSVGTask.renderer(context) : null,
+                ("station" + context.targetStation == context.role) ? augmentedSVGTask.renderer(context) : null,
               //display: config => context => augmentedSVGTask.renderer(context),
               response: config => htmlButtons({
                 //header: cond => legendHeader(cond.iconBaseURL, cond.iconData),

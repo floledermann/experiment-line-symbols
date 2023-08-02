@@ -13,6 +13,7 @@ const DEFAULTS = {
   baseMap: true
 };
 
+// generates the SVG code of the line type for the header 
 function svgStr(kind, pixelsPerMM) {
   let svgStr = `
     <svg viewBox="0 -7.5 30 15" width="${8 * pixelsPerMM}" height="${5 * pixelsPerMM}" style="vertical-align: bottom;">
@@ -164,8 +165,8 @@ function svgRenderer(options) {
           svg.style.visibility = "visible";
         });
         
-        parent.innerHTML = "";  
-        parent.appendChild(header);        
+        parent.innerHTML = "";
+        parent.appendChild(header);
         parent.appendChild(svg);
       }
     }
